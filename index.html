@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NeuraFlow — Work Smarter With AI That Thinks Ahead</title>
+<meta name="description" content="NeuraFlow is the AI productivity platform that summarizes meetings, automates busywork, and gives teams a workflow builder and AI assistant that thinks ahead. Start free." />
+<meta name="keywords" content="AI productivity, meeting summaries, workflow automation, team collaboration, AI assistant, project management" />
+<meta name="author" content="NeuraFlow" />
+<link rel="canonical" href="https://neuraflow.ai/" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="NeuraFlow — Work Smarter With AI That Thinks Ahead" />
+<meta property="og:description" content="Automate busywork, summarize meetings, and run your team's workflows with an AI that thinks ahead." />
+<meta property="og:site_name" content="NeuraFlow" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#0B1020" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2224%22 fill=%22%230B1020%22/><path d=%22M30 70 L30 30 L70 70 L70 30%22 stroke=%22%236366F1%22 stroke-width=%2210%22 fill=%22none%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/></svg>" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "NeuraFlow",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "AI-powered productivity platform that automates tasks, summarizes meetings, manages projects, and assists teams with intelligent workflows.",
+  "offers": [
+    { "@type": "Offer", "name": "Starter", "price": "0", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Pro", "price": "24", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Enterprise", "price": "0", "priceCurrency": "USD", "description": "Custom pricing" }
+  ],
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "reviewCount": "2140" }
+}
+</script>
+
+<style>
+  /* ===== Design tokens ===== */
+  :root{
+    --primary:#6366F1;
+    --secondary:#8B5CF6;
+    --accent:#06B6D4;
+    --bg:#0B1020;
+    --card:rgba(255,255,255,0.08);
+    --muted:#A1A1AA;
+    --font-display: 'Space Grotesk', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Self-hosted-feel fallback: since we can't fetch Google Fonts here reliably,
+     we build a refined system-font stack that still reads "premium". */
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:#fff;
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:var(--font-display); letter-spacing:-0.02em; }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+  ul{ list-style:none; }
+  ::selection{ background:var(--primary); color:#fff; }
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:#0B1020; }
+  ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--primary),var(--accent)); border-radius:8px; }
+
+  .container{ max-width:1240px; margin:0 auto; padding:0 24px; }
+  .container-md{ max-width:860px; margin:0 auto; padding:0 24px; }
+  .container-sm{ max-width:640px; margin:0 auto; padding:0 24px; }
+
+  .eyebrow{
+    font-size:.75rem; text-transform:uppercase; letter-spacing:.2em; font-weight:600;
+    color:var(--accent); margin-bottom:16px; display:block; text-align:center;
+  }
+
+  .grad-text{
+    background:linear-gradient(120deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    background-size:200% 200%; animation:gradShift 8s ease infinite;
+  }
+  @keyframes gradShift{ 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+  /* ===== Backgrounds ===== */
+  .bg-noise{
+    background-image:radial-gradient(circle at 1px 1px, rgba(255,255,255,.035) 1px, transparent 0);
+    background-size:26px 26px;
+  }
+  .aurora{ position:absolute; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+  .aurora::before,.aurora::after{ content:''; position:absolute; border-radius:9999px; filter:blur(120px); opacity:.35; }
+  .aurora::before{ width:640px;height:640px; top:-220px; left:-160px; background:radial-gradient(circle,var(--primary),transparent 65%); animation:drift1 22s ease-in-out infinite alternate; }
+  .aurora::after{ width:560px;height:560px; top:120px; right:-200px; background:radial-gradient(circle,var(--accent),transparent 65%); animation:drift2 26s ease-in-out infinite alternate; }
+  @keyframes drift1{ 0%{transform:translate(0,0)} 100%{transform:translate(60px,80px)} }
+  @keyframes drift2{ 0%{transform:translate(0,0)} 100%{transform:translate(-70px,-40px)} }
+
+  .mesh-grid{
+    background-image:linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size:42px 42px;
+    -webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 90%);
+    mask-image:radial-gradient(ellipse 80% 70% at 50% 30%, black 40%, transparent 90%);
+  }
+
+  /* ===== Glass ===== */
+  .glass{ background:var(--card); border:1px solid rgba(255,255,255,.10); backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%); }
+  .glass-strong{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(24px) saturate(160%); -webkit-backdrop-filter:blur(24px) saturate(160%); }
+  .rounded-lg{ border-radius:12px; } .rounded-xl{ border-radius:16px; } .rounded-2xl{ border-radius:20px; } .rounded-3xl{ border-radius:28px; } .rounded-full{ border-radius:9999px; }
+
+  /* ===== Buttons ===== */
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:600; font-size:.95rem; padding:14px 28px; border-radius:12px; white-space:nowrap; position:relative; overflow:hidden; isolation:isolate; }
+  .btn-primary{ background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#fff; box-shadow:0 8px 30px -6px rgba(99,102,241,.55); transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, filter .25s ease; }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 40px -6px rgba(99,102,241,.7); filter:brightness(1.06); }
+  .btn-primary:active{ transform:translateY(0) scale(.98); }
+  .btn-ghost{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); color:#fff; transition:all .25s cubic-bezier(.2,.8,.2,1); }
+  .btn-ghost:hover{ background:rgba(255,255,255,.11); border-color:rgba(255,255,255,.28); transform:translateY(-2px); }
+  .btn-sm{ padding:10px 18px; font-size:.85rem; border-radius:10px; }
+  .btn-full{ width:100%; }
+  .ripple{ position:absolute; border-radius:9999px; background:rgba(255,255,255,.5); transform:scale(0); animation:rippleAnim .6s ease-out forwards; pointer-events:none; }
+  @keyframes rippleAnim{ to{ transform:scale(3.2); opacity:0; } }
+
+  /* ===== Nav ===== */
+  .navbar{ position:fixed; top:0; left:0; right:0; z-index:100; padding:20px 0; transition:all .4s ease; }
+  .navbar.scrolled{ padding:12px 0; }
+  .nav-inner{ max-width:1240px; margin:0 auto; padding:4px 24px; display:flex; align-items:center; justify-content:space-between; border-radius:20px; transition:all .4s ease; }
+  .navbar.scrolled .nav-inner{ background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); backdrop-filter:blur(24px) saturate(160%); -webkit-backdrop-filter:blur(24px) saturate(160%); padding:12px 24px; box-shadow:0 10px 40px -10px rgba(0,0,0,.5); }
+  .brand{ display:flex; align-items:center; gap:10px; }
+  .brand-mark{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--secondary),var(--accent)); box-shadow:0 8px 20px -6px rgba(99,102,241,.5); transition:transform .3s; }
+  .brand:hover .brand-mark{ transform:scale(1.06); }
+  .brand-name{ font-family:var(--font-display); font-weight:700; font-size:1.15rem; }
+  .nav-links{ display:flex; align-items:center; gap:32px; }
+  .nav-link{ font-size:.9rem; color:var(--muted); position:relative; transition:color .2s; }
+  .nav-link::after{ content:''; position:absolute; bottom:-6px; left:0; width:0; height:1px; background:linear-gradient(90deg,var(--primary),var(--accent)); transition:width .3s; }
+  .nav-link:hover{ color:#fff; } .nav-link:hover::after{ width:100%; }
+  .nav-actions{ display:flex; align-items:center; gap:12px; }
+  .nav-login{ font-size:.9rem; color:var(--muted); padding:10px 12px; transition:color .2s; }
+  .nav-login:hover{ color:#fff; }
+  .nav-toggle{ display:none; padding:8px; }
+  .mobile-menu{ display:none; margin:8px 16px 0; padding:20px; flex-direction:column; gap:2px; }
+  .mobile-menu.open{ display:flex; }
+  .mobile-menu a{ padding:12px 4px; font-size:.9rem; color:var(--muted); border-bottom:1px solid rgba(255,255,255,.06); }
+  .mobile-menu .mobile-actions{ display:flex; flex-direction:column; gap:10px; margin-top:14px; }
+
+  @media (max-width:860px){
+    .nav-links,.nav-actions{ display:none; }
+    .nav-toggle{ display:block; }
+  }
+
+  /* ===== Hero ===== */
+  .hero{ position:relative; padding:160px 0 110px; overflow:hidden; }
+  .hero-badge{ display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:9999px; font-size:.75rem; font-weight:500; color:rgba(255,255,255,.8); margin-bottom:28px; }
+  .dot-ping{ position:relative; width:8px; height:8px; }
+  .dot-ping::before{ content:''; position:absolute; inset:0; border-radius:9999px; background:var(--accent); opacity:.75; animation:ping 1.6s cubic-bezier(0,0,0.2,1) infinite; }
+  .dot-ping::after{ content:''; position:absolute; inset:0; border-radius:9999px; background:var(--accent); }
+  @keyframes ping{ 75%,100%{ transform:scale(2.4); opacity:0; } }
+
+  .hero h1{ font-size:clamp(2.6rem,6vw,4.6rem); font-weight:600; line-height:1.08; text-align:center; margin-bottom:24px; }
+  .hero p.lead{ font-size:clamp(1.05rem,2vw,1.25rem); color:var(--muted); max-width:640px; margin:0 auto 40px; text-align:center; line-height:1.6; }
+  .hero-ctas{ display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:16px; margin-bottom:20px; }
+  .hero-fine{ text-align:center; font-size:.78rem; color:rgba(161,161,170,.7); }
+
+  .hero-visual{ position:relative; max-width:1080px; margin:80px auto 0; }
+  .floating-card{ position:absolute; z-index:20; padding:16px; width:210px; animation:float 6s ease-in-out infinite; }
+  .floating-card.fc2{ animation-duration:7s; animation-delay:1.2s; }
+  .floating-card.fc3{ animation-duration:5.5s; animation-delay:2.1s; }
+  @keyframes float{ 0%,100%{ transform:translateY(0) rotate(0deg);} 50%{ transform:translateY(-14px) rotate(1deg);} }
+  @media (max-width:1000px){ .floating-card{ display:none; } }
+  .fc1{ left:-40px; top:36px; } .fc2{ right:-32px; top:120px; } .fc3{ right:-16px; bottom:-32px; }
+  .fc-head{ display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .fc-icon{ width:28px; height:28px; border-radius:8px; display:grid; place-items:center; background:linear-gradient(135deg,var(--primary),var(--secondary)); flex-shrink:0; }
+  .fc-title{ font-size:.75rem; font-weight:600; }
+  .fc-body{ font-size:.7rem; color:var(--muted); line-height:1.5; }
+  .fc-dot{ width:8px; height:8px; border-radius:9999px; background:#34d399; animation:pulseGlow 2.4s ease-in-out infinite; }
+  @keyframes pulseGlow{ 0%,100%{ opacity:.5; } 50%{ opacity:1; } }
+  .fc-metric{ font-size:1.5rem; font-weight:600; font-family:var(--font-display); background:linear-gradient(90deg,#fff,#C7D2FE,var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+
+  .dash-frame{ position:relative; padding:10px; border-radius:26px; box-shadow:0 40px 100px -30px rgba(0,0,0,.7); }
+  .dash-inner{ border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.1); background:#0D1326; }
+  .dash-chrome{ display:flex; align-items:center; gap:8px; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,.05); background:rgba(255,255,255,.02); }
+  .chrome-dot{ width:10px; height:10px; border-radius:9999px; }
+  .dash-url{ margin-left:12px; font-size:.68rem; color:rgba(161,161,170,.7); font-family:monospace; }
+  .dash-grid{ display:grid; grid-template-columns:1fr; }
+  @media (min-width:760px){ .dash-grid{ grid-template-columns:1fr 3fr; } }
+  .dash-sidebar{ display:none; flex-direction:column; gap:6px; padding:16px; border-right:1px solid rgba(255,255,255,.05); background:rgba(255,255,255,.02); }
+  @media (min-width:760px){ .dash-sidebar{ display:flex; } }
+  .sb-label{ font-size:.65rem; text-transform:uppercase; letter-spacing:.1em; color:rgba(161,161,170,.6); margin-bottom:4px; padding:0 8px; }
+  .sb-item{ font-size:.75rem; padding:9px 12px; border-radius:8px; color:rgba(161,161,170,.8); display:flex; align-items:center; gap:8px; }
+  .sb-item.active{ background:linear-gradient(90deg, rgba(99,102,241,.25), rgba(6,182,212,.1)); color:#fff; }
+  .sb-bullet{ width:6px; height:6px; border-radius:9999px; background:rgba(255,255,255,.2); }
+  .sb-item.active .sb-bullet{ background:var(--accent); }
+  .dash-main{ padding:20px 24px; }
+  .dash-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  .dash-top h3{ font-size:.9rem; font-weight:600; }
+  .dash-top p{ font-size:.7rem; color:var(--muted); margin-top:2px; }
+  .dash-badge{ font-size:.7rem; padding:5px 12px; border-radius:9999px; background:rgba(52,211,153,.15); color:#34d399; font-weight:600; }
+  .bars{ display:flex; align-items:flex-end; gap:8px; height:110px; margin-bottom:24px; }
+  .bar{ flex:1; border-radius:6px 6px 0 0; background:linear-gradient(180deg, var(--primary), var(--accent)); animation:barGrow 1s ease backwards; }
+  @keyframes barGrow{ from{ height:0 !important; } }
+  .dash-stats{ display:grid; grid-template-columns:1fr; gap:12px; }
+  @media (min-width:520px){ .dash-stats{ grid-template-columns:repeat(3,1fr); } }
+  .dstat{ padding:14px; border-radius:14px; }
+  .dstat .val{ font-size:1.15rem; font-weight:600; font-family:var(--font-display); margin:8px 0 2px; }
+  .dstat .lbl{ font-size:.68rem; color:var(--muted); }
+
+  /* ===== Trusted by ===== */
+  .trusted{ position:relative; padding:60px 0; border-top:1px solid rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.05); }
+  .marquee-wrap{ max-width:1240px; margin:0 auto; overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent); mask-image:linear-gradient(90deg,transparent,black 10%,black 90%,transparent); }
+  .marquee-track{ display:flex; gap:64px; width:max-content; animation:marquee 28s linear infinite; }
+  .marquee-wrap:hover .marquee-track{ animation-play-state:paused; }
+  @keyframes marquee{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+  .marquee-track span{ font-family:var(--font-display); font-size:1.4rem; font-weight:600; color:rgba(255,255,255,.35); white-space:nowrap; transition:color .2s; }
+  .marquee-track span:hover{ color:rgba(255,255,255,.7); }
+
+  /* ===== Section heading ===== */
+  .section{ position:relative; padding:112px 0; }
+  .section-head{ max-width:640px; margin:0 auto 64px; text-align:center; }
+  .section-head h2{ font-size:clamp(1.9rem,4vw,3rem); font-weight:600; margin-bottom:16px; }
+  .section-head p{ color:var(--muted); font-size:1.1rem; line-height:1.6; }
+
+  /* ===== Feature cards ===== */
+  .grid-features{ display:grid; grid-template-columns:1fr; gap:20px; }
+  @media (min-width:640px){ .grid-features{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:960px){ .grid-features{ grid-template-columns:repeat(3,1fr); } }
+  .fcard{ padding:28px; height:100%; transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease; }
+  .fcard:hover{ transform:translateY(-6px); box-shadow:0 24px 60px -20px rgba(99,102,241,.35); border-color:rgba(255,255,255,.22); }
+  .fcard-icon{ width:44px; height:44px; border-radius:14px; display:grid; place-items:center; background:linear-gradient(135deg, rgba(99,102,241,.2), rgba(6,182,212,.2)); border:1px solid rgba(255,255,255,.1); margin-bottom:20px; transition:transform .3s; }
+  .fcard:hover .fcard-icon{ transform:scale(1.1); }
+  .fcard h3{ font-size:1.15rem; font-weight:600; margin-bottom:8px; }
+  .fcard p{ font-size:.9rem; color:var(--muted); line-height:1.6; }
+
+  /* ===== Showcase ===== */
+  .showcase-tabs{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:48px; }
+  .tab-btn{ display:flex; align-items:center; gap:8px; padding:11px 18px; border-radius:12px; font-size:.9rem; font-weight:500; color:var(--muted); transition:all .3s; }
+  .tab-btn.active{ background:linear-gradient(135deg,var(--primary),var(--secondary)); color:#fff; box-shadow:0 8px 30px -6px rgba(99,102,241,.55); }
+  .showcase-grid{ display:grid; grid-template-columns:1fr; gap:40px; align-items:center; }
+  @media (min-width:960px){ .showcase-grid{ grid-template-columns:1fr 1fr; } }
+  .showcase-text h3{ font-size:1.7rem; font-weight:600; margin-bottom:16px; }
+  .showcase-text p{ color:var(--muted); font-size:1.1rem; line-height:1.7; margin-bottom:32px; }
+  .showcase-stats{ display:flex; gap:32px; margin-bottom:32px; }
+  .showcase-stats .val{ font-size:1.9rem; font-weight:600; font-family:var(--font-display); }
+  .showcase-stats .lbl{ font-size:.75rem; color:var(--muted); margin-top:4px; }
+  .showcase-link{ display:inline-flex; align-items:center; gap:8px; font-size:.9rem; font-weight:600; }
+  .showcase-panel{ padding:8px; border-radius:20px; box-shadow:0 30px 80px -25px rgba(0,0,0,.6); }
+  .showcase-inner{ border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.1); background:#0D1326; padding:28px; min-height:320px; display:flex; flex-direction:column; justify-content:center; }
+  .sc-row{ display:flex; align-items:flex-start; gap:12px; padding:12px; border-radius:12px; margin-bottom:10px; animation:fadeSlide .5s ease backwards; }
+  @keyframes fadeSlide{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  .sc-flow{ display:flex; align-items:center; justify-content:center; gap:12px; }
+  .sc-step{ padding:20px 14px; border-radius:12px; text-align:center; width:96px; animation:fadeSlide .5s ease backwards; }
+  .sc-step-icon{ width:32px; height:32px; border-radius:8px; margin:0 auto 8px; background:linear-gradient(135deg,var(--primary),var(--accent)); }
+  .sc-step p{ font-size:.68rem; color:var(--muted); margin:0; }
+  .sc-chat{ padding:12px; border-radius:12px; font-size:.9rem; max-width:82%; margin-bottom:12px; color:rgba(255,255,255,.85); }
+  .sc-chat.user{ margin-left:auto; }
+  .sc-chat.ai{ border:1px solid rgba(99,102,241,.3); }
+
+  /* ===== Stats ===== */
+  .stats-section{ padding:96px 0; border-top:1px solid rgba(255,255,255,.05); border-bottom:1px solid rgba(255,255,255,.05); }
+  .stats-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:32px; text-align:center; max-width:960px; margin:0 auto; }
+  @media (min-width:760px){ .stats-grid{ grid-template-columns:repeat(4,1fr); } }
+  .stat-num{ font-size:clamp(2rem,4vw,2.8rem); font-weight:600; font-family:var(--font-display); margin-bottom:8px; font-variant-numeric:tabular-nums; }
+  .stat-lbl{ font-size:.9rem; color:var(--muted); }
+
+  /* ===== Testimonials ===== */
+  .grid-testimonials{ display:grid; grid-template-columns:1fr; gap:20px; }
+  @media (min-width:640px){ .grid-testimonials{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:1024px){ .grid-testimonials{ grid-template-columns:repeat(4,1fr); } }
+  .tcard{ padding:26px; height:100%; display:flex; flex-direction:column; transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease, border-color .35s ease; }
+  .tcard:hover{ transform:translateY(-6px); box-shadow:0 24px 60px -20px rgba(99,102,241,.35); }
+  .tcard .quote-icon{ color:rgba(99,102,241,.6); margin-bottom:14px; }
+  .tcard p.quote{ color:rgba(255,255,255,.9); line-height:1.65; margin-bottom:24px; flex:1; font-size:.95rem; }
+  .tcard-foot{ display:flex; align-items:center; gap:12px; }
+  .avatar{ width:40px; height:40px; border-radius:9999px; display:grid; place-items:center; font-size:.7rem; font-weight:600; background:linear-gradient(135deg,var(--primary),var(--accent)); flex-shrink:0; }
+  .tcard-name{ font-size:.85rem; font-weight:600; }
+  .tcard-role{ font-size:.72rem; color:var(--muted); }
+  .stars{ margin-left:auto; display:flex; gap:2px; color:#fbbf24; }
+
+  /* ===== Pricing ===== */
+  .grid-pricing{ display:grid; grid-template-columns:1fr; gap:24px; align-items:stretch; }
+  @media (min-width:860px){ .grid-pricing{ grid-template-columns:repeat(3,1fr); } }
+  .pcard{ position:relative; padding:32px 28px; border-radius:20px; display:flex; flex-direction:column; height:100%; transition:transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease; }
+  .pcard:hover{ transform:translateY(-6px); }
+  .pcard.highlight{ border:2px solid rgba(99,102,241,.5); box-shadow:0 30px 70px -25px rgba(99,102,241,.4); }
+  @media (min-width:860px){ .pcard.highlight{ transform:translateY(-14px); } .pcard.highlight:hover{ transform:translateY(-20px); } }
+  .pcard-badge{ position:absolute; top:-14px; left:50%; transform:translateX(-50%); font-size:.72rem; font-weight:600; padding:6px 14px; border-radius:9999px; background:linear-gradient(90deg,var(--primary),var(--accent)); color:#fff; box-shadow:0 8px 20px -6px rgba(99,102,241,.6); white-space:nowrap; }
+  .pcard h3{ font-size:1.3rem; font-weight:600; margin-bottom:6px; }
+  .pcard .pdesc{ font-size:.85rem; color:var(--muted); margin-bottom:22px; }
+  .pcard .price{ margin-bottom:26px; }
+  .pcard .price .amt{ font-size:2.4rem; font-weight:600; font-family:var(--font-display); }
+  .pcard .price .period{ font-size:.85rem; color:var(--muted); margin-left:6px; }
+  .pcard ul{ margin-bottom:30px; flex:1; }
+  .pcard li{ display:flex; align-items:flex-start; gap:10px; font-size:.88rem; color:rgba(255,255,255,.85); margin-bottom:13px; }
+  .pcard li svg{ color:var(--accent); flex-shrink:0; margin-top:2px; }
+
+  /* ===== FAQ ===== */
+  .faq-item{ border-radius:16px; overflow:hidden; margin-bottom:12px; }
+  .faq-q{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left; padding:20px 24px; font-weight:500; }
+  .faq-chev{ transition:transform .3s; color:var(--muted); flex-shrink:0; }
+  .faq-item.open .faq-chev{ transform:rotate(180deg); color:var(--accent); }
+  .faq-panel{ max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.2,.8,.2,1); }
+  .faq-panel p{ padding:0 24px 20px; font-size:.9rem; color:var(--muted); line-height:1.7; }
+
+  /* ===== CTA Banner ===== */
+  .cta-wrap{ padding:96px 0; }
+  .cta-banner{ position:relative; overflow:hidden; border-radius:28px; padding:80px 32px; text-align:center; }
+  .cta-glow{ position:absolute; inset:0; z-index:-1; }
+  .cta-glow span{ position:absolute; border-radius:9999px; filter:blur(100px); }
+  .cta-glow .g1{ width:380px; height:380px; top:-120px; left:22%; background:rgba(99,102,241,.3); }
+  .cta-glow .g2{ width:380px; height:380px; bottom:-120px; right:22%; background:rgba(6,182,212,.25); }
+  .cta-banner h2{ font-size:clamp(1.9rem,4.5vw,3rem); font-weight:600; margin-bottom:18px; max-width:640px; margin-left:auto; margin-right:auto; }
+  .cta-banner > p{ color:var(--muted); font-size:1.1rem; max-width:520px; margin:0 auto 36px; }
+  .cta-actions{ display:flex; flex-wrap:wrap; justify-content:center; gap:16px; }
+
+  /* ===== Footer ===== */
+  footer{ border-top:1px solid rgba(255,255,255,.05); padding:64px 0 32px; }
+  .footer-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-bottom:56px; }
+  @media (min-width:760px){ .footer-grid{ grid-template-columns:2fr 1fr 1fr 1fr 1fr; } }
+  .footer-brand p{ font-size:.88rem; color:var(--muted); line-height:1.6; max-width:280px; margin:16px 0 20px; }
+  .social-row{ display:flex; gap:10px; }
+  .social-btn{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; font-size:.7rem; font-weight:600; color:var(--muted); transition:all .2s; }
+  .social-btn:hover{ color:#fff; border-color:rgba(255,255,255,.3); }
+  .footer-col h4{ font-family:var(--font-body); font-size:.88rem; font-weight:600; margin-bottom:16px; }
+  .footer-col li{ margin-bottom:12px; }
+  .footer-col a{ font-size:.85rem; color:var(--muted); transition:color .2s; }
+  .footer-col a:hover{ color:#fff; }
+  .footer-bottom{ padding-top:28px; border-top:1px solid rgba(255,255,255,.05); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:16px; }
+  .footer-bottom p{ font-size:.75rem; color:var(--muted); }
+  .footer-lang{ display:flex; align-items:center; gap:6px; font-size:.75rem; color:var(--muted); }
+
+  /* ===== Reveal-on-scroll ===== */
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:6px; }
+
+  .skip-link{ position:absolute; left:-9999px; top:0; z-index:200; background:var(--primary); color:#fff; padding:12px 20px; border-radius:8px; }
+  .skip-link:focus{ left:16px; top:16px; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to content</a>
+
+<!-- ============ NAVBAR ============ -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner" id="navInner">
+    <a href="#top" class="brand">
+      <span class="brand-mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V6l12 12V6"/></svg>
+      </span>
+      <span class="brand-name">NeuraFlow</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a class="nav-link" href="#features">Features</a>
+      <a class="nav-link" href="#showcase">Product</a>
+      <a class="nav-link" href="#pricing">Pricing</a>
+      <a class="nav-link" href="#faq">FAQ</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="nav-login" href="#">Log in</a>
+      <a class="btn btn-primary btn-sm rippleable" href="#pricing">Start Free Trial</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu glass-strong rounded-2xl" id="mobileMenu">
+    <a href="#features">Features</a>
+    <a href="#showcase">Product</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <div class="mobile-actions">
+      <a href="#" style="text-align:center;color:var(--muted);font-size:.9rem;padding:10px 0;">Log in</a>
+      <a class="btn btn-primary btn-full rippleable" href="#pricing">Start Free Trial</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="aurora" aria-hidden="true"></div>
+  <div class="bg-noise" style="position:absolute;inset:0;opacity:.4;" aria-hidden="true"></div>
+
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="reveal" style="text-align:center;">
+      <span class="hero-badge glass rounded-full" style="display:inline-flex;">
+        <span class="dot-ping"></span>
+        Now with GPT-5-class reasoning across every workspace
+      </span>
+    </div>
+
+    <h1 class="reveal">Work Smarter With <span class="grad-text">AI That Thinks</span><br class="br-desktop"> Ahead.</h1>
+
+    <p class="lead reveal">NeuraFlow summarizes your meetings, automates the busywork, and keeps every project moving — so your team spends time deciding, not digging.</p>
+
+    <div class="hero-ctas reveal">
+      <a href="#pricing" class="btn btn-primary rippleable">
+        Start Free Trial
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#showcase" class="btn btn-ghost rippleable">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4.5v15l14-7.5-14-7.5z"/></svg>
+        Watch Demo
+      </a>
+    </div>
+    <p class="hero-fine reveal">No credit card required · Free for 14 days · Cancel anytime</p>
+
+    <div class="hero-visual reveal">
+      <div class="floating-card fc1 glass-strong rounded-2xl">
+        <div class="fc-head">
+          <span class="fc-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 19v3"/></svg></span>
+          <span class="fc-title">Meeting Summary</span>
+        </div>
+        <p class="fc-body">3 action items assigned · Q3 roadmap approved · Follow-up Thu</p>
+      </div>
+
+      <div class="floating-card fc2 glass-strong rounded-2xl">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+          <span class="fc-title">Automation</span>
+          <span class="fc-dot"></span>
+        </div>
+        <p class="fc-body">Weekly report sent to 12 stakeholders</p>
+      </div>
+
+      <div class="floating-card fc3 glass-strong rounded-2xl">
+        <div class="fc-head">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>
+          <span class="fc-title">Team Velocity</span>
+        </div>
+        <p class="fc-metric">+34%</p>
+      </div>
+
+      <div class="dash-frame glass-strong">
+        <div class="dash-inner">
+          <div class="dash-chrome">
+            <span class="chrome-dot" style="background:rgba(248,113,113,.7);"></span>
+            <span class="chrome-dot" style="background:rgba(250,204,21,.7);"></span>
+            <span class="chrome-dot" style="background:rgba(74,222,128,.7);"></span>
+            <span class="dash-url">app.neuraflow.ai/dashboard</span>
+          </div>
+          <div class="dash-grid">
+            <div class="dash-sidebar">
+              <div class="sb-label">Workspace</div>
+              <div class="sb-item active"><span class="sb-bullet"></span>Overview</div>
+              <div class="sb-item"><span class="sb-bullet"></span>Projects</div>
+              <div class="sb-item"><span class="sb-bullet"></span>Meetings</div>
+              <div class="sb-item"><span class="sb-bullet"></span>Automations</div>
+              <div class="sb-item"><span class="sb-bullet"></span>Analytics</div>
+            </div>
+            <div class="dash-main">
+              <div class="dash-top">
+                <div>
+                  <h3>Weekly Productivity</h3>
+                  <p>Auto-generated insight · updated 2m ago</p>
+                </div>
+                <span class="dash-badge">+18.2%</span>
+              </div>
+              <div class="bars">
+                <div class="bar" style="height:40%;animation-delay:0s;"></div>
+                <div class="bar" style="height:65%;animation-delay:.08s;"></div>
+                <div class="bar" style="height:50%;animation-delay:.16s;"></div>
+                <div class="bar" style="height:80%;animation-delay:.24s;"></div>
+                <div class="bar" style="height:60%;animation-delay:.32s;"></div>
+                <div class="bar" style="height:95%;animation-delay:.4s;"></div>
+                <div class="bar" style="height:70%;animation-delay:.48s;"></div>
+              </div>
+              <div class="dash-stats">
+                <div class="dstat glass">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 19v3"/></svg>
+                  <p class="val">128</p><p class="lbl">Meetings Summarized</p>
+                </div>
+                <div class="dstat glass">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+                  <p class="val">412</p><p class="lbl">Tasks Automated</p>
+                </div>
+                <div class="dstat glass">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1.4"/></svg>
+                  <p class="val">76%</p><p class="lbl">AI Suggestions Used</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUSTED BY ============ -->
+<section class="trusted">
+  <div class="container reveal" style="text-align:center;margin-bottom:36px;">
+    <p style="font-size:.72rem;text-transform:uppercase;letter-spacing:.2em;color:rgba(161,161,170,.7);font-weight:500;">Trusted by product-led teams at</p>
+  </div>
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow reveal">Platform</span>
+      <h2 class="reveal">Everything your team needs, <span class="grad-text">minus the busywork</span></h2>
+      <p class="reveal">Six systems working together so your team can focus on the work only humans can do.</p>
+    </div>
+    <div class="grid-features" id="featuresGrid"></div>
+  </div>
+</section>
+
+<!-- ============ SHOWCASE ============ -->
+<section class="section" id="showcase" style="overflow:hidden;">
+  <div class="mesh-grid" style="position:absolute;inset:0;opacity:.6;"></div>
+  <div class="container" style="position:relative;">
+    <div class="section-head">
+      <span class="eyebrow reveal">Product</span>
+      <h2 class="reveal">See NeuraFlow <span class="grad-text">in motion</span></h2>
+    </div>
+
+    <div class="showcase-tabs reveal" id="showcaseTabs"></div>
+
+    <div class="showcase-grid">
+      <div class="showcase-text reveal" id="showcaseText"></div>
+      <div class="showcase-panel glass-strong reveal" id="showcasePanel">
+        <div class="showcase-inner" id="showcaseInner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats-section">
+  <div class="container">
+    <div class="stats-grid" id="statsGrid"></div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow reveal">Testimonials</span>
+      <h2 class="reveal">Loved by teams who <span class="grad-text">ship faster</span></h2>
+    </div>
+    <div class="grid-testimonials" id="testimonialsGrid"></div>
+  </div>
+</section>
+
+<!-- ============ PRICING ============ -->
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow reveal">Pricing</span>
+      <h2 class="reveal">Simple pricing, <span class="grad-text">serious leverage</span></h2>
+      <p class="reveal">Start free. Upgrade when your team is ready to move faster.</p>
+    </div>
+    <div class="grid-pricing" id="pricingGrid"></div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" id="faq">
+  <div class="container-md">
+    <div class="section-head">
+      <span class="eyebrow reveal">FAQ</span>
+      <h2 class="reveal">Questions, <span class="grad-text">answered</span></h2>
+    </div>
+    <div id="faqList"></div>
+  </div>
+</section>
+
+<!-- ============ CTA BANNER ============ -->
+<section class="cta-wrap">
+  <div class="container reveal">
+    <div class="cta-banner glass-strong">
+      <div class="cta-glow"><span class="g1"></span><span class="g2"></span></div>
+      <h2>Give your team its time back.</h2>
+      <p>Join thousands of teams running on NeuraFlow. Set up takes minutes, not sprints.</p>
+      <div class="cta-actions">
+        <a href="#pricing" class="btn btn-primary rippleable">
+          Start Free Trial
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#showcase" class="btn btn-ghost rippleable">Watch Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="brand">
+          <span class="brand-mark" style="width:32px;height:32px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18V6l12 12V6"/></svg>
+          </span>
+          <span class="brand-name">NeuraFlow</span>
+        </a>
+        <p>The AI productivity platform for teams who'd rather build than manage busywork.</p>
+        <div class="social-row">
+          <a href="#" class="social-btn glass" aria-label="NeuraFlow on X">X</a>
+          <a href="#" class="social-btn glass" aria-label="NeuraFlow on LinkedIn">in</a>
+          <a href="#" class="social-btn glass" aria-label="NeuraFlow on GitHub">gh</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#showcase">Product Showcase</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#">Changelog</a></li>
+          <li><a href="#">Roadmap</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Guides</a></li>
+          <li><a href="#">Community</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="copyrightYear">© 2026 NeuraFlow, Inc. All rights reserved.</p>
+      <div class="footer-lang">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18"/><path d="M12 3a15 15 0 0 0 0 18"/></svg>
+        English (US)
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ===== Icon helper ===== */
+  function svg(pathHtml, size){ size = size || 20; return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">'+pathHtml+'</svg>'; }
+  var ICONS = {
+    mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 19v3"/>',
+    bolt: '<path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/>',
+    users: '<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9" r="2.7"/><path d="M15.2 12.5A5.5 5.5 0 0 1 21.5 19"/>',
+    trending: '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+    workflow: '<rect x="3" y="4" width="6" height="6" rx="1.4"/><rect x="15" y="4" width="6" height="6" rx="1.4"/><rect x="9" y="15" width="6" height="6" rx="1.4"/><path d="M9 7h4a2 2 0 0 1 2 2v.5"/><path d="M12 13.5V10"/>',
+    bot: '<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 8V4"/><circle cx="12" cy="3" r="1.4"/><circle cx="9" cy="14" r="1.2"/><circle cx="15" cy="14" r="1.2"/><path d="M9 18h6"/>',
+    check: '<path d="M20 6 9 17l-5-5"/>',
+    arrowRight: '<path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>',
+    quote: '<path d="M7 8a4 4 0 0 0-4 4v4h6v-6H6a2 2 0 0 1 2-2V8z" fill="currentColor" stroke="none"/><path d="M17 8a4 4 0 0 0-4 4v4h6v-6h-3a2 2 0 0 1 2-2V8z" fill="currentColor" stroke="none"/>',
+    star: '<path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.1 6.5L12 17.3l-5.8 3.2L7.3 14 2.5 9.4l6.6-.9L12 2.5z" fill="currentColor" stroke="none"/>',
+    chev: '<path d="M6 9l6 6 6-6"/>'
+  };
+
+  /* ===== Reveal on scroll ===== */
+  function initReveal(){
+    var els = document.querySelectorAll('.reveal');
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function(el, i){
+      el.style.transitionDelay = Math.min(i % 6, 5) * 70 + 'ms';
+      obs.observe(el);
+    });
+  }
+
+  /* ===== Navbar scroll state ===== */
+  var navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 24) navbar.classList.add('scrolled');
+    else navbar.classList.remove('scrolled');
+  });
+
+  /* ===== Mobile menu ===== */
+  var navToggle = document.getElementById('navToggle');
+  var mobileMenu = document.getElementById('mobileMenu');
+  navToggle.addEventListener('click', function(){
+    var isOpen = mobileMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', isOpen ? 'true':'false');
+    navToggle.innerHTML = isOpen
+      ? svg('<path d="M6 6l12 12"/><path d="M18 6L6 18"/>', 24)
+      : svg('<path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>', 24);
+  });
+  mobileMenu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded','false');
+      navToggle.innerHTML = svg('<path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/>', 24);
+    });
+  });
+
+  /* ===== Ripple effect ===== */
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('.rippleable');
+    if(!btn) return;
+    var rect = btn.getBoundingClientRect();
+    var ripple = document.createElement('span');
+    var size = Math.max(rect.width, rect.height);
+    ripple.className = 'ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+    ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(function(){ ripple.remove(); }, 650);
+  });
+
+  /* ===== Trusted-by marquee ===== */
+  var COMPANIES = ["Vantage","Northwind","Orbital","Fluxo","Heliox","Aster & Co","Lumen Labs","Nimbus"];
+  var track = document.getElementById('marqueeTrack');
+  var doubled = COMPANIES.concat(COMPANIES);
+  track.innerHTML = doubled.map(function(c){ return '<span>'+c+'</span>'; }).join('');
+
+  /* ===== Features ===== */
+  var FEATURES = [
+    { icon:'mic', title:'AI Meeting Summaries', desc:'Every call is transcribed, summarized, and turned into action items automatically — no note-taking required.' },
+    { icon:'bolt', title:'Smart Automation', desc:'Trigger multi-step workflows from a single event. NeuraFlow handles the repetitive work between decisions.' },
+    { icon:'users', title:'Team Collaboration', desc:'Shared context, live cursors, and threaded discussions keep everyone aligned without another status meeting.' },
+    { icon:'trending', title:'Predictive Analytics', desc:'Forecast delivery dates and spot at-risk projects days before they slip, based on real team velocity.' },
+    { icon:'workflow', title:'Workflow Builder', desc:'Drag-and-drop your team\'s exact process. No code, no rigid templates — just the way you actually work.' },
+    { icon:'bot', title:'AI Assistant', desc:'Ask questions in plain language and get answers pulled from your docs, tasks, and past conversations.' }
+  ];
+  var featuresGrid = document.getElementById('featuresGrid');
+  featuresGrid.innerHTML = FEATURES.map(function(f){
+    return '<div class="fcard glass rounded-2xl reveal">'+
+      '<div class="fcard-icon">'+svg(ICONS[f.icon],20)+'</div>'+
+      '<h3>'+f.title+'</h3><p>'+f.desc+'</p>'+
+    '</div>';
+  }).join('');
+
+  /* ===== Showcase ===== */
+  var TABS = [
+    {
+      id:'summaries', label:'Meeting Summaries', icon:'mic',
+      title:'Every meeting, distilled in seconds.',
+      desc:'NeuraFlow joins your calls, transcribes in real time, and surfaces decisions and owners the moment the meeting ends.',
+      stats:[{v:'12s',l:'Avg. summary time'},{v:'98.4%',l:'Accuracy'}]
+    },
+    {
+      id:'automation', label:'Automation', icon:'bolt',
+      title:'Workflows that run themselves.',
+      desc:'Connect triggers to actions across your stack. When a deal closes, NeuraFlow updates the roadmap, notifies the team, and drafts the kickoff doc.',
+      stats:[{v:'9.2',l:'Hours saved / week'},{v:'40k+',l:'Active automations'}]
+    },
+    {
+      id:'assistant', label:'AI Assistant', icon:'bot',
+      title:'Ask anything about your work.',
+      desc:'The assistant reads across your docs, tasks, and meeting notes so you get a direct answer instead of another search.',
+      stats:[{v:'<1s',l:'Response time'},{v:'12+',l:'Context sources'}]
+    }
+  ];
+  var activeTab = 0;
+  var showcaseTabs = document.getElementById('showcaseTabs');
+  var showcaseText = document.getElementById('showcaseText');
+  var showcaseInner = document.getElementById('showcaseInner');
+
+  function renderTabs(){
+    showcaseTabs.innerHTML = TABS.map(function(t,i){
+      return '<button class="tab-btn '+(i===activeTab?'active':'')+' glass" data-i="'+i+'" aria-pressed="'+(i===activeTab)+'">'+
+        svg(ICONS[t.icon],16)+' '+t.label+
+      '</button>';
+    }).join('');
+    showcaseTabs.querySelectorAll('.tab-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        activeTab = parseInt(btn.dataset.i,10);
+        render();
+      });
+    });
+  }
+
+  function renderText(){
+    var t = TABS[activeTab];
+    showcaseText.innerHTML =
+      '<h3>'+t.title+'</h3><p>'+t.desc+'</p>'+
+      '<div class="showcase-stats">'+
+        t.stats.map(function(s){ return '<div><p class="val grad-text">'+s.v+'</p><p class="lbl">'+s.l+'</p></div>'; }).join('')+
+      '</div>'+
+      '<a href="#pricing" class="showcase-link">Explore '+t.label+' '+svg(ICONS.arrowRight,16)+'</a>';
+  }
+
+  function renderPanel(){
+    var content = '';
+    if(activeTab === 0){
+      var lines = ["Alex approved the Q3 budget","Priya to send updated timeline by Fri","Design review moved to next sprint"];
+      content = lines.map(function(line,i){
+        return '<div class="sc-row glass" style="animation-delay:'+(i*0.12)+'s;">'+
+          svg(ICONS.check,16)+' <span style="font-size:.9rem;color:rgba(255,255,255,.85);">'+line+'</span>'+
+        '</div>';
+      }).join('');
+    } else if(activeTab === 1){
+      var steps = ["Trigger","Condition","Action"];
+      content = '<div class="sc-flow">'+steps.map(function(s,i){
+        return (i>0? svg(ICONS.arrowRight,16)+'<span style="color:rgba(161,161,170,.5);"></span>' : '') +
+          '<div class="sc-step glass" style="animation-delay:'+(i*0.15)+'s;"><div class="sc-step-icon"></div><p>'+s+'</p></div>';
+      }).join('')+'</div>';
+    } else {
+      content =
+        '<div class="sc-chat glass user">What\'s blocking the Aurora launch?</div>'+
+        '<div class="sc-chat glass-strong ai">Two items: QA sign-off (due tomorrow) and the pricing page copy, assigned to Jo — still in draft.</div>';
+    }
+    showcaseInner.innerHTML = content;
+  }
+
+  function render(){ renderTabs(); renderText(); renderPanel(); }
+  render();
+
+  /* ===== Stats counters ===== */
+  var STATS = [
+    { target:48000, suffix:'+', label:'Teams onboarded', decimals:0 },
+    { target:9.4, suffix:'M', label:'Hours automated', decimals:1 },
+    { target:98, suffix:'%', label:'Summary accuracy', decimals:0 },
+    { target:4.9, suffix:'/5', label:'Average rating', decimals:1 }
+  ];
+  var statsGrid = document.getElementById('statsGrid');
+  statsGrid.innerHTML = STATS.map(function(s,i){
+    return '<div class="reveal"><p class="stat-num grad-text" data-target="'+s.target+'" data-decimals="'+s.decimals+'" data-suffix="'+s.suffix+'">0</p><p class="stat-lbl">'+s.label+'</p></div>';
+  }).join('');
+
+  function animateCounter(el){
+    var target = parseFloat(el.dataset.target);
+    var decimals = parseInt(el.dataset.decimals,10);
+    var suffix = el.dataset.suffix;
+    var duration = 1800;
+    var start = performance.now();
+    function tick(now){
+      var progress = Math.min((now-start)/duration, 1);
+      var eased = 1 - Math.pow(1-progress, 3);
+      var val = target * eased;
+      el.textContent = val.toFixed(decimals) + suffix;
+      if(progress < 1) requestAnimationFrame(tick);
+      else el.textContent = target.toFixed(decimals) + suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+  var counterObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        animateCounter(entry.target);
+        counterObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.4 });
+  statsGrid.querySelectorAll('.stat-num').forEach(function(el){ counterObs.observe(el); });
+
+  /* ===== Testimonials ===== */
+  var TESTIMONIALS = [
+    { name:'Maya Chen', role:'VP of Operations, Vantage', quote:'NeuraFlow cut our meeting follow-up time by more than half. Action items just appear where they need to.', initials:'MC' },
+    { name:'Daniel Ortiz', role:'Head of Product, Fluxo', quote:'The workflow builder replaced four separate tools. Our team finally works from one source of truth.', initials:'DO' },
+    { name:'Sarah Kim', role:'COO, Northwind', quote:'Predictive analytics flagged a delivery risk two weeks before we would have caught it manually.', initials:'SK' },
+    { name:'James Whitfield', role:'Engineering Lead, Heliox', quote:'The AI assistant genuinely understands our codebase context — it\'s like onboarding a very fast teammate.', initials:'JW' }
+  ];
+  var testimonialsGrid = document.getElementById('testimonialsGrid');
+  testimonialsGrid.innerHTML = TESTIMONIALS.map(function(t){
+    var stars = '';
+    for(var i=0;i<5;i++){ stars += svg(ICONS.star,14); }
+    return '<div class="tcard glass rounded-2xl reveal">'+
+      '<span class="quote-icon">'+svg(ICONS.quote,26)+'</span>'+
+      '<p class="quote">"'+t.quote+'"</p>'+
+      '<div class="tcard-foot">'+
+        '<div class="avatar">'+t.initials+'</div>'+
+        '<div><p class="tcard-name">'+t.name+'</p><p class="tcard-role">'+t.role+'</p></div>'+
+        '<div class="stars">'+stars+'</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+
+  /* ===== Pricing ===== */
+  var PRICING = [
+    { name:'Starter', price:'0', period:'forever', desc:'For individuals getting organized.',
+      features:['Up to 3 projects','20 AI meeting summaries / mo','Basic automations','Community support'],
+      cta:'Start Free', highlight:false },
+    { name:'Pro', price:'24', period:'per user / mo', desc:'For growing teams that move fast.',
+      features:['Unlimited projects','Unlimited meeting summaries','Advanced workflow builder','Predictive analytics','Priority support'],
+      cta:'Start Free Trial', highlight:true },
+    { name:'Enterprise', price:'Custom', period:'billed annually', desc:'For organizations that need control.',
+      features:['Everything in Pro','SSO & advanced security','Dedicated success manager','Custom integrations','99.9% uptime SLA'],
+      cta:'Contact Sales', highlight:false }
+  ];
+  var pricingGrid = document.getElementById('pricingGrid');
+  pricingGrid.innerHTML = PRICING.map(function(p){
+    return '<div class="pcard '+(p.highlight?'highlight glass-strong':'glass')+' reveal">'+
+      (p.highlight?'<span class="pcard-badge">Most Popular</span>':'')+
+      '<h3>'+p.name+'</h3><p class="pdesc">'+p.desc+'</p>'+
+      '<div class="price"><span class="amt">'+(p.price!=='Custom'?'$'+p.price:p.price)+'</span><span class="period">'+p.period+'</span></div>'+
+      '<ul>'+p.features.map(function(f){ return '<li>'+svg(ICONS.check,16)+'<span>'+f+'</span></li>'; }).join('')+'</ul>'+
+      '<a href="#" class="btn '+(p.highlight?'btn-primary':'btn-ghost')+' btn-full rippleable">'+p.cta+'</a>'+
+    '</div>';
+  }).join('');
+
+  /* ===== FAQ ===== */
+  var FAQS = [
+    { q:'How does NeuraFlow summarize meetings?', a:'NeuraFlow joins your calendar and calls (Zoom, Meet, Teams), transcribes the conversation in real time, and uses AI to extract decisions, owners, and deadlines — delivered to your workspace within seconds of the call ending.' },
+    { q:'Can I import my existing projects and tasks?', a:'Yes. NeuraFlow includes one-click importers for Asana, Trello, Jira, and Notion, plus a CSV importer for anything else. Your history, assignees, and due dates carry over automatically.' },
+    { q:'Is my data secure?', a:'NeuraFlow is SOC 2 Type II certified and encrypts data in transit and at rest. Enterprise plans include SSO, audit logs, and configurable data residency.' },
+    { q:'Do I need to write code to build automations?', a:'No. The workflow builder is fully visual — drag triggers, conditions, and actions onto a canvas. Advanced users can optionally add custom scripts for edge cases.' },
+    { q:'What happens after my free trial ends?', a:'You\'ll be prompted to choose a plan before any charge occurs. If you do nothing, your account automatically moves to the free Starter plan — no surprise billing.' },
+    { q:'Can I cancel anytime?', a:'Yes, cancel from your billing settings at any time. You\'ll retain access through the end of your current billing period, and you can export your data whenever you like.' }
+  ];
+  var faqList = document.getElementById('faqList');
+  faqList.innerHTML = FAQS.map(function(item,i){
+    return '<div class="faq-item glass rounded-2xl reveal '+(i===0?'open':'')+'" data-i="'+i+'">'+
+      '<button class="faq-q" aria-expanded="'+(i===0)+'">'+
+        '<span>'+item.q+'</span><span class="faq-chev">'+svg(ICONS.chev,20)+'</span>'+
+      '</button>'+
+      '<div class="faq-panel"><p>'+item.a+'</p></div>'+
+    '</div>';
+  }).join('');
+
+  function setPanelHeight(item, open){
+    var panel = item.querySelector('.faq-panel');
+    if(open){ panel.style.maxHeight = panel.scrollHeight + 'px'; }
+    else{ panel.style.maxHeight = '0px'; }
+  }
+  faqList.querySelectorAll('.faq-item').forEach(function(item){
+    setPanelHeight(item, item.classList.contains('open'));
+    item.querySelector('.faq-q').addEventListener('click', function(){
+      var willOpen = !item.classList.contains('open');
+      faqList.querySelectorAll('.faq-item').forEach(function(other){
+        other.classList.remove('open');
+        other.querySelector('.faq-q').setAttribute('aria-expanded','false');
+        setPanelHeight(other, false);
+      });
+      if(willOpen){
+        item.classList.add('open');
+        item.querySelector('.faq-q').setAttribute('aria-expanded','true');
+        setPanelHeight(item, true);
+      }
+    });
+  });
+
+  /* ===== Footer year ===== */
+  document.getElementById('copyrightYear').textContent = '© ' + new Date().getFullYear() + ' NeuraFlow, Inc. All rights reserved.';
+
+  /* ===== Init reveal after DOM is populated ===== */
+  initReveal();
+})();
+</script>
+</body>
+</html>
