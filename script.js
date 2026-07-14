@@ -1,7 +1,6 @@
 (function () {
     "use strict";
 
-    /* ===== Icon helper ===== */
     function svg(pathHtml, size) { size = size || 20; return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">' + pathHtml + '</svg>'; }
     var ICONS = {
         mic: '<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10a7 7 0 0 0 14 0"/><path d="M12 19v3"/>',
@@ -17,7 +16,6 @@
         chev: '<path d="M6 9l6 6 6-6"/>'
     };
 
-    /* ===== Reveal on scroll ===== */
     function initReveal() {
         var els = document.querySelectorAll('.reveal');
         var obs = new IntersectionObserver(function (entries) {
@@ -34,14 +32,12 @@
         });
     }
 
-    /* ===== Navbar scroll state ===== */
     var navbar = document.getElementById('navbar');
     window.addEventListener('scroll', function () {
         if (window.scrollY > 24) navbar.classList.add('scrolled');
         else navbar.classList.remove('scrolled');
     });
 
-    /* ===== Mobile menu ===== */
     var navToggle = document.getElementById('navToggle');
     var mobileMenu = document.getElementById('mobileMenu');
     navToggle.addEventListener('click', function () {
@@ -59,7 +55,6 @@
         });
     });
 
-    /* ===== Ripple effect ===== */
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('.rippleable');
         if (!btn) return;
@@ -74,13 +69,11 @@
         setTimeout(function () { ripple.remove(); }, 650);
     });
 
-    /* ===== Trusted-by marquee ===== */
     var COMPANIES = ["Vantage", "Northwind", "Orbital", "Fluxo", "Heliox", "Aster & Co", "Lumen Labs", "Nimbus"];
     var track = document.getElementById('marqueeTrack');
     var doubled = COMPANIES.concat(COMPANIES);
     track.innerHTML = doubled.map(function (c) { return '<span>' + c + '</span>'; }).join('');
 
-    /* ===== Features ===== */
     var FEATURES = [
         { icon: 'mic', title: 'AI Meeting Summaries', desc: 'Every call is transcribed, summarized, and turned into action items automatically — no note-taking required.' },
         { icon: 'bolt', title: 'Smart Automation', desc: 'Trigger multi-step workflows from a single event. NeuraFlow handles the repetitive work between decisions.' },
@@ -97,7 +90,6 @@
             '</div>';
     }).join('');
 
-    /* ===== Showcase ===== */
     var TABS = [
         {
             id: 'summaries', label: 'Meeting Summaries', icon: 'mic',
@@ -173,7 +165,6 @@
     function render() { renderTabs(); renderText(); renderPanel(); }
     render();
 
-    /* ===== Stats counters ===== */
     var STATS = [
         { target: 48000, suffix: '+', label: 'Teams onboarded', decimals: 0 },
         { target: 9.4, suffix: 'M', label: 'Hours automated', decimals: 1 },
@@ -211,7 +202,6 @@
     }, { threshold: 0.4 });
     statsGrid.querySelectorAll('.stat-num').forEach(function (el) { counterObs.observe(el); });
 
-    /* ===== Testimonials ===== */
     var TESTIMONIALS = [
         { name: 'Maya Chen', role: 'VP of Operations, Vantage', quote: 'NeuraFlow cut our meeting follow-up time by more than half. Action items just appear where they need to.', initials: 'MC' },
         { name: 'Daniel Ortiz', role: 'Head of Product, Fluxo', quote: 'The workflow builder replaced four separate tools. Our team finally works from one source of truth.', initials: 'DO' },
@@ -233,7 +223,6 @@
             '</div>';
     }).join('');
 
-    /* ===== Pricing ===== */
     var PRICING = [
         {
             name: 'Starter', price: '0', period: 'forever', desc: 'For individuals getting organized.',
@@ -262,7 +251,6 @@
             '</div>';
     }).join('');
 
-    /* ===== FAQ ===== */
     var FAQS = [
         { q: 'How does NeuraFlow summarize meetings?', a: 'NeuraFlow joins your calendar and calls (Zoom, Meet, Teams), transcribes the conversation in real time, and uses AI to extract decisions, owners, and deadlines — delivered to your workspace within seconds of the call ending.' },
         { q: 'Can I import my existing projects and tasks?', a: 'Yes. NeuraFlow includes one-click importers for Asana, Trello, Jira, and Notion, plus a CSV importer for anything else. Your history, assignees, and due dates carry over automatically.' },
@@ -303,9 +291,7 @@
         });
     });
 
-    /* ===== Footer year ===== */
     document.getElementById('copyrightYear').textContent = '© ' + new Date().getFullYear() + ' NeuraFlow, Inc. All rights reserved.';
 
-    /* ===== Init reveal after DOM is populated ===== */
     initReveal();
 })();
